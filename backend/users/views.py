@@ -1,15 +1,12 @@
+from djoser.views import TokenDestroyView as DjoserTokenDestroyView
+from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework import permissions
-from djoser.views import (
-    TokenDestroyView as DjoserTokenDestroyView,
-    UserViewSet as DjoserUserViewSet
-)
-
 from users.serializers import EmptySerializer
 
 
 class TokenDestroyView(DjoserTokenDestroyView):
     """
-    Переопределено из-за drf-spectacular, т.к. POST запрос без
+    Логаут. Переопределено из-за drf-spectacular, т.к. POST запрос без
     тела не поддерживается.
     """
     serializer_class = EmptySerializer

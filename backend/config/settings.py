@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 import sys
 from pathlib import Path
@@ -105,22 +106,6 @@ DATABASES = {
 }
 
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
-]
-
-
 # Internationalization
 
 LANGUAGE_CODE = "en-us"
@@ -156,7 +141,8 @@ if ENABLE_DEBUG_TOOLBAR:
 ########################
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
@@ -168,7 +154,97 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'api.exceptions.custom_exception_handler',
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 30
+    'PAGE_SIZE': 30,
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '50/min',
+        'user': '1000/min'
+    },
+}
+
+
+#######################
+#  USER
+#######################
+AUTH_USER_MODEL = 'users.User'
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+]
+
+DJOSER = {
+    'LOGIN_FIELD': 'username',
+    'USERNAME_FIELD': 'username',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'SEND_ACTIVATION_EMAIL': False,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
+    'PASSWORD_RESET_CONFIRM_RETYPE': False,
+    'HIDE_USERS': False,
+    'SERIALIZERS': {
+        'user': 'users.serializers.UserSerializer',
+        'current_user': 'users.serializers.UserSerializer',
+        'user_create_password_retype': 'users.serializers.UserCreateSerializer',
+    },
+    'PERMISSIONS': {
+        'user': ('api.permissions.AuthorOrStaff',),
+        'user_list': ('rest_framework.permissions.IsAdminUser',),
+        'token_destroy': ('rest_framework.permissions.IsAuthenticated',),
+        'user_create': ('api.permissions.NotIsAuthenticated',),
+    },
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=300),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": True,
+
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    "JTI_CLAIM": "jti",
+
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=300),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=7),
+
+    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
 
@@ -189,35 +265,4 @@ SPECTACULAR_SETTINGS = {
     'SWAGGER_UI_DIST': 'SIDECAR',
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
-}
-
-#######################
-#  USER
-#######################
-DJOSER = {
-    'LOGIN_FIELD': 'email',
-    'USERNAME_FIELD': 'email',
-    'USER_CREATE_PASSWORD_RETYPE': True,
-    'SEND_ACTIVATION_EMAIL': False,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
-    'PASSWORD_RESET_CONFIRM_RETYPE': False,
-    'HIDE_USERS': False,
-    "PASSWORD_RESET_CONFIRM_URL": "#/password/reset/confirm/{uid}/{token}",  # в письмах настроить
-    "USERNAME_RESET_CONFIRM_URL": "#/username/reset/confirm/{uid}/{token}",
-    'SERIALIZERS': {
-        'user': 'users.serializers.UserSerializer',
-        'current_user': 'users.serializers.UserSerializer',
-        'user_create_password_retype': 'users.serializers.UserCreateSerializer',
-    },
-    'PERMISSIONS': {
-        'user': ('api.permissions.AuthorOrStaff',),
-        'user_list': ('rest_framework.permissions.IsAdminUser',),
-        'token_destroy': ('rest_framework.permissions.IsAuthenticated',),
-        'user_create': ('api.permissions.NotIsAuthenticated',),
-    },
-    # 'DEFAULT_PARSER_CLASSES': (
-    #     'rest_framework.parsers.JSONParser',
-    #     'rest_framework.parsers.FormParser',
-    #     'rest_framework.parsers.MultiPartParser',
-    # )
 }
