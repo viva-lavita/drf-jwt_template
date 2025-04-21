@@ -1,43 +1,40 @@
-from datetime import timedelta
 import os
 import sys
+from datetime import timedelta
 from pathlib import Path
 from platform import system
 
 from dotenv import load_dotenv
 
 try:
-    load_dotenv(os.path.join(Path(__file__).resolve().parent.parent.parent, '.env'))
+    load_dotenv(os.path.join(Path(__file__).resolve().parent.parent.parent, ".env"))
 except FileNotFoundError:
-    raise FileNotFoundError('Did not find .env')
+    raise FileNotFoundError("Did not find .env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv('DEBUG', default=False) == 'True'
+DEBUG = os.getenv("DEBUG", default=False) == "True"
 
-ALLOWED_HOSTS = os.getenv(
-    'ALLOWED_HOSTS', '127.0.0.1 localhost'
-).split()
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1 localhost").split()
 
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    'CSRF_TRUSTED_ORIGINS', 'http://127.0.0.1 http://localhost'
-).split()
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "http://127.0.0.1 http://localhost").split()
 
-CORS_ALLOWED_ORIGINS = os.getenv(
-    'CORS_ALLOWED_ORIGINS', 'http://127.0.0.1 http://localhost'
-).split()
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://127.0.0.1 http://localhost").split()
 
-CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', default=False) == 'True'
+CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", default=False) == "True"
 
-SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', default=False) == 'True'
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", default=False) == "True"
 
-DEFAULT_SITE_URL = os.getenv('DEFAULT_SITE_URL', default='127.0.0.1:8000')
+DEFAULT_SITE_URL = os.getenv("DEFAULT_SITE_URL", default="127.0.0.1:8000")
 
 OPERATING_SYSTEM = system()
 
-# Application definition
+
+########################
+#  APPLICATION
+########################
 
 # base
 INSTALLED_APPS = [
@@ -53,7 +50,6 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     "rest_framework",
     "rest_framework_simplejwt",
-    "rest_framework.authtoken",
     "django_filters",
     "djoser",
     "corsheaders",
@@ -105,9 +101,9 @@ DATABASES = {
     }
 }
 
-
-# Internationalization
-
+########################
+#  INTERNATIONALIZATION
+########################
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -120,11 +116,11 @@ USE_TZ = True
 ########################
 #  STATIC AND MEDIA
 ########################
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -140,36 +136,30 @@ if ENABLE_DEBUG_TOOLBAR:
 #  API
 ########################
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         # 'rest_framework.authentication.TokenAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
-
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend'
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "EXCEPTION_HANDLER": "api.exceptions.custom_exception_handler",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 30,
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
     ],
-    'EXCEPTION_HANDLER': 'api.exceptions.custom_exception_handler',
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 30,
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '50/min',
-        'user': '1000/min'
-    },
+    "DEFAULT_THROTTLE_RATES": {"anon": "50/min", "user": "1000/min"},
 }
 
 
 #######################
 #  USER
 #######################
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -187,23 +177,23 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 DJOSER = {
-    'LOGIN_FIELD': 'username',
-    'USERNAME_FIELD': 'username',
-    'USER_CREATE_PASSWORD_RETYPE': True,
-    'SEND_ACTIVATION_EMAIL': False,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
-    'PASSWORD_RESET_CONFIRM_RETYPE': False,
-    'HIDE_USERS': False,
-    'SERIALIZERS': {
-        'user': 'users.serializers.UserSerializer',
-        'current_user': 'users.serializers.UserSerializer',
-        'user_create_password_retype': 'users.serializers.UserCreateSerializer',
+    "LOGIN_FIELD": "username",
+    "USERNAME_FIELD": "username",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SEND_ACTIVATION_EMAIL": False,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": False,
+    "PASSWORD_RESET_CONFIRM_RETYPE": False,
+    "HIDE_USERS": False,
+    "SERIALIZERS": {
+        "user": "users.serializers.UserSerializer",
+        "current_user": "users.serializers.UserSerializer",
+        "user_create_password_retype": "users.serializers.UserCreateSerializer",  # pragma: allowlist secret
     },
-    'PERMISSIONS': {
-        'user': ('api.permissions.AuthorOrStaff',),
-        'user_list': ('rest_framework.permissions.IsAdminUser',),
-        'token_destroy': ('rest_framework.permissions.IsAuthenticated',),
-        'user_create': ('api.permissions.NotIsAuthenticated',),
+    "PERMISSIONS": {
+        "user": ("api.permissions.AuthorOrStaff",),
+        "user_list": ("rest_framework.permissions.IsAdminUser",),
+        "token_destroy": ("rest_framework.permissions.IsAuthenticated",),
+        "user_create": ("api.permissions.NotIsAuthenticated",),
     },
 }
 
@@ -213,7 +203,6 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
-
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": "",
@@ -222,23 +211,18 @@ SIMPLE_JWT = {
     "JSON_ENCODER": None,
     "JWK_URL": None,
     "LEEWAY": 0,
-
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
-
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "TOKEN_TYPE_CLAIM": "token_type",
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
-
     "JTI_CLAIM": "jti",
-
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=300),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=7),
-
     "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
     "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
@@ -252,17 +236,17 @@ SIMPLE_JWT = {
 #  SWAGGER
 ########################
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Django5 Template',
-    'DESCRIPTION': 'Django5 Test Swagger API description',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    'SCHEMA_PATH_PREFIX': '/api/v1/',
-    'COMPONENT_SPLIT_REQUEST': True,
-    'SWAGGER_UI_SETTINGS': {
-        'deepLinking': True,
-        'persistAuthorization': True,
+    "TITLE": "Django5 Template",
+    "DESCRIPTION": "Django5 Test Swagger API description",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "/api/v1/",
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
     },
-    'SWAGGER_UI_DIST': 'SIDECAR',
-    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    'REDOC_DIST': 'SIDECAR',
+    "SWAGGER_UI_DIST": "SIDECAR",
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
 }

@@ -5,6 +5,7 @@
 3. Подключен Swagger (OpenAPI 3.0, использован [drf-spectacular](https://drf-spectacular.readthedocs.io/en/latest/), статика для api добавлена через [drf-spectacular-sidecar](https://drf-spectacular.readthedocs.io/en/latest/readme.html)).
 4. Подключен [ruff](https://docs.astral.sh/ruff/), настройки в pyproject.toml.
 5. Подключены [django-filters](https://django-filter.readthedocs.io/en/main/).
+6. Обратите внимание, в проекте использован Django 5.2.
 
 ## Настройки
 
