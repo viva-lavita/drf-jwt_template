@@ -31,6 +31,8 @@ DEFAULT_SITE_URL = os.getenv("DEFAULT_SITE_URL", default="127.0.0.1:8000")
 
 OPERATING_SYSTEM = system()
 
+TESTING = "test" in sys.argv
+
 
 ########################
 #  APPLICATION
@@ -104,7 +106,14 @@ DATABASES = {
 ########################
 #  INTERNATIONALIZATION
 ########################
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-RU"
+
+LANGUAGES = [
+    ("ru", "Русский"),
+    ("en", "English"),
+]
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 TIME_ZONE = "UTC"
 
@@ -126,10 +135,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-ENABLE_DEBUG_TOOLBAR = DEBUG and "test" not in sys.argv
+ENABLE_DEBUG_TOOLBAR = DEBUG and not TESTING
 if ENABLE_DEBUG_TOOLBAR:
     INSTALLED_APPS.append("debug_toolbar")
-    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+    MIDDLEWARE = [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        *MIDDLEWARE,
+    ]
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]
 
 
 ########################

@@ -6,24 +6,18 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/v1/', include('api.urls')),
-    path('schema/swagger-ui/',
-         SpectacularSwaggerView.as_view(url_name='schema'),
-         name='swagger-ui'),
-    path('schema/redoc/',
-         SpectacularRedocView.as_view(url_name='schema'),
-         name='redoc'),
-    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path("api/v1/", include("api.urls")),
+    path("schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    path("schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
 ]
 
 if settings.ENABLE_DEBUG_TOOLBAR:
     import debug_toolbar
 
-    urlpatterns.append(path("debug/", include(debug_toolbar.urls)))
+    urlpatterns += [path("debug/ ", include(debug_toolbar.urls))]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-    urlpatterns += static(settings.STATIC_URL,
-                          document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
