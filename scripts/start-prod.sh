@@ -9,4 +9,4 @@ python manage.py makemigrations --noinput
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
-exec gunicorn --bind "${HOST}:${PORT}" --workers 2 --threads 6 --timeout 60 --reload --chdir=/backend config.wsgi:application
+exec gunicorn --bind "${HOST}:${PORT}" --workers ${GUNICORN_WORKERS} --threads ${GUNICORN_THREADS} --timeout ${GUNICORN_TIMEOUT} --reload config.wsgi:application

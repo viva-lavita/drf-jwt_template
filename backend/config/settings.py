@@ -106,7 +106,7 @@ DATABASES = {
 ########################
 #  INTERNATIONALIZATION
 ########################
-LANGUAGE_CODE = "ru-RU"
+LANGUAGE_CODE = "ru-ru"
 
 LANGUAGES = [
     ("ru", "Русский"),

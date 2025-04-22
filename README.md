@@ -42,7 +42,7 @@ class User(AbstractUser):
     )
 ```
 
-Для формирования файла перевода, допустим, на русском используйте команду:
+Для формирования файла перевода на русском используйте [команду](https://docs.djangoproject.com/en/5.2/ref/django-admin/#django-admin-makemessages):
 
 ```bash
 django-admin makemessages --locale=ru
@@ -54,6 +54,12 @@ django-admin makemessages --locale=ru
 python manage.py compilemessages -l ru
 ```
 
-Локаль меняется в settings.py в разделе INTERNATIONALIZATION.
+Локаль меняется в settings.py в разделе INTERNATIONALIZATION. [Документация](https://docs.djangoproject.com/en/4.2/topics/i18n/)
 
-[Документация](https://docs.djangoproject.com/en/5.2/ref/django-admin/#django-admin-makemessages)
+### ENV
+
+Для генерации секретных ключей вы можете выполнить следующую команду:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
