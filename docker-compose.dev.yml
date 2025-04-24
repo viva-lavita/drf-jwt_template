@@ -20,13 +20,11 @@ services:
       - .env
     ports:
       - "8000:8000"
+    volumes:
+      - static:/backend/static/
+      - media:/backend/media/
     networks:
       - default
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/utils/health-check/"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
     command: bash /scripts/start-dev.sh
 
   nginx:

@@ -10,6 +10,7 @@
 4. Подключен [ruff](https://docs.astral.sh/ruff/), настройки в pyproject.toml.
 5. Подключены [django-filters](https://django-filter.readthedocs.io/en/main/).
 6. В dev зависимости добавлены и настроены [pre-commit](https://pre-commit.com/) и [django-debug-toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/installation.html).
+7. Добавлены файлы [docker](https://docs.docker.com/build/) и [docker-compose](https://docs.docker.com/compose/) (dev и prod версии).
 
 ## Настройки
 
@@ -62,4 +63,22 @@ python manage.py compilemessages -l ru
 
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
+
+ДОПИСАТЬ
+
+### docker-compose
+
+В проекте два docker-compose файла -  для дев и прод версий. Обратите внимание, если для локальной разработке в контейнерах вы захотите сделать двухстороннюю синхронизацию, чтобы изменения в коде прогружались в контейнер и наоборот, с текущей версией у вас ничего не получится, так как для образа используется uv, который создает виртуальную среду внутри контейнера, что создает коллизии и виртуальная среда не распознается.
+Если вам очень нужен данный функционал, можно воспользоваться советами из [этого обсуждения](https://github.com/astral-sh/uv/issues/9423)
+
+Команда пересборки dev-контейнеров:
+```bash
+docker compose -f docker-compose.dev.yml up --build
+```
+
+Команда для прод сборки:
+
+```bash
+docker compose up
 ```
