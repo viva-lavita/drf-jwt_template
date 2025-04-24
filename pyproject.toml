@@ -14,13 +14,13 @@ dependencies = [
     "drf-spectacular>=0.28.0",
     "drf-spectacular-sidecar>=2025.4.1",
     "python-dotenv>=1.1.0",
-    "ruff>=0.11.6",
 ]
 
 [dependency-groups]
 dev = [
     "django-debug-toolbar>=5.1.0",
     "pre-commit>=4.2.0",
+    "ruff>=0.11.6",
 ]
 
 

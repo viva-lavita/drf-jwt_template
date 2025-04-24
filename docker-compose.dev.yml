@@ -3,12 +3,6 @@ services:
   db:
     image: postgres:12
     restart: always
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 10s
-      retries: 5
-      start_period: 30s
-      timeout: 10s
     volumes:
       - app-db-data:/var/lib/postgresql/data/pgdata
     env_file:
@@ -19,14 +13,13 @@ services:
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
   backend:
-    # build: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
     build: .
     depends_on:
-      db:
-        condition: service_healthy
-        restart: true
+      - db
     env_file:
       - .env
+    ports:
+      - "8000:8000"
     networks:
       - default
     healthcheck:
@@ -34,17 +27,13 @@ services:
         interval: 10s
         timeout: 5s
         retries: 5
-    command: bash /scripts/start-prod.sh
-
+    command: bash /scripts/start-dev.sh
 
   nginx:
     image: nginx:alpine
     restart: always
     depends_on:
-      # - backend
-      backend:
-        condition: service_healthy
-        restart: true
+      - backend
     ports:
       - "9000:80"
     volumes:

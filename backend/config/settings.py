@@ -27,7 +27,7 @@ CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", default=False) == "True"
 
 SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", default=False) == "True"
 
-DEFAULT_SITE_URL = os.getenv("DEFAULT_SITE_URL", default="127.0.0.1:8000")
+DEFAULT_SITE_URL = os.getenv("DEFAULT_SITE_URL", default="localhost:8000")
 
 OPERATING_SYSTEM = system()
 
@@ -153,7 +153,6 @@ if ENABLE_DEBUG_TOOLBAR:
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        # 'rest_framework.authentication.TokenAuthentication',
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
