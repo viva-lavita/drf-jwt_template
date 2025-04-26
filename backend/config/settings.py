@@ -127,11 +127,9 @@ USE_TZ = True
 ########################
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-print("STATIC_ROOT", STATIC_ROOT)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-print("MEDIA_ROOT", MEDIA_ROOT)
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -199,16 +197,14 @@ DJOSER = {
     "SEND_ACTIVATION_EMAIL": False,
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": False,
     "PASSWORD_RESET_CONFIRM_RETYPE": False,
-    "HIDE_USERS": False,
+    "HIDE_USERS": True,
     "SERIALIZERS": {
         "user": "users.serializers.UserSerializer",
         "current_user": "users.serializers.UserSerializer",
         "user_create_password_retype": "users.serializers.UserCreateSerializer",  # pragma: allowlist secret
+        "user_delete": "users.serializers.UserDeleteSerializer",
     },
     "PERMISSIONS": {
-        "user": ("api.permissions.AuthorOrStaff",),
-        "user_list": ("rest_framework.permissions.IsAdminUser",),
-        "token_destroy": ("rest_framework.permissions.IsAuthenticated",),
         "user_create": ("api.permissions.NotIsAuthenticated",),
     },
 }
