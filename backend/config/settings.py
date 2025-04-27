@@ -29,7 +29,7 @@ SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", default=False) == "Tr
 
 DEFAULT_SITE_URL = os.getenv("DEFAULT_SITE_URL", default="localhost:8000")
 
-OPERATING_SYSTEM = system()
+OPERATING_SYSTEM = system()  # можно привязать запуск redis и celery
 
 TESTING = "test" in sys.argv
 

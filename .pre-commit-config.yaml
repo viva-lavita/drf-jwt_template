@@ -17,6 +17,12 @@ repos:
     hooks:
       - id: detect-secrets
         exclude: .*/migrations/.*
+        exclude: |
+            (?x)^(
+                .*/.env|
+                .env.example|
+                .*/migrations/.*
+            )$
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.11.2
