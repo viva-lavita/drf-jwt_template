@@ -1,4 +1,4 @@
-![example workflow](https://github.com/viva-lavita/foodgram-project-react/actions/workflows/main.yml/badge.svg)
+![example workflow](https://github.com/viva-lavita/drf-jwt_template/actions/workflows/deploy-production.yml/badge.svg)
 
 [![GitHub%20Actions](https://img.shields.io/badge/-GitHub%20Actions-464646?style=flat-square&logo=GitHub%20actions)](https://github.com/features/actions)
 [![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com)
@@ -13,7 +13,6 @@
 
 Шаблон для нового проекта Django с JWT аутентификацией. Django 5 версии.
 Для использования этого шаблона в собственном проекте используйте кнопку `Use this template` в правом верхнем углу экрана.
-У вас должен быть установлен пакетный менеджер uv. [Документация](https://docs.astral.sh/uv/getting-started/installation/#pypi).
 
 ---
 

@@ -1,4 +1,4 @@
-FROM python:3.12 as build-image
+FROM python:3.13 as build-image
 
 RUN mkdir /backend
 ENV HOME="/backend"
