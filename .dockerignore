@@ -21,3 +21,4 @@ __pycache__/
 *.pyc
 Dockerfile
 db.sqlite3
+django.mo
