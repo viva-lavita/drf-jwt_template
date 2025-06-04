@@ -20,7 +20,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
 
   backend:
-    build: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
+    image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
     depends_on:
       db:
         condition: service_healthy
