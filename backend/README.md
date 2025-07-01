@@ -44,6 +44,16 @@
 python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
+### pre-commit
+
+В репозитории перед пушем изменений настроена автоматическая проверка линтерами (полный список см конфиг .pre-commit-config.yaml), чтобы эта утилита запустилась, один раз после копирования репозитория, находясь в корне проекта или глубже, в терминале запустите команду:
+
+```bash
+pre-commit install
+```
+
+Теперь если при попытке создания коммита в коде были ошибки стилистики - они будут исправлены. Добавьте изменения и создайте коммит еще раз.
+
 ### docker-compose
 
 В проекте два docker-compose файла -  для дев и прод версий.
@@ -119,7 +129,7 @@ python manage.py compilemessages -l ru
 4. Создаем и проводим миграции:
 
     ```bash
-    python manage.py makemigrtions
+    python manage.py makemigrations
     python manage.py migrate
     ```
 
